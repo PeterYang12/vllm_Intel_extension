@@ -1,0 +1,20 @@
+backend: vllm
+# customization_cache_capacity: 10000
+logging_level: INFO
+# model_repo_path: /model-store
+model_type: LLAMA3
+pipeline:
+  # model_name: ensemble
+  # num_instances: 256
+# TODO
+vllm:
+  ckpt_type: hf
+  data_type: float16
+  batch_size: 128
+  sequence_length: 2048
+  # model_path: /config/models/llama3_8b_pyt_safetensors_mode-pretrain
+  model_type: llama
+  num_gpus: 1
+  pipeline_para_size: 1
+  quantize: null
+  tensor_para_size: 1
