@@ -1,6 +1,6 @@
 # TODO
-# Using fake hash ID
-gaudi2-vllm-fp16-tp1-pp1:
+# Use fake hash ID
+gaudi2-vllm-fp16-tp1-throughput:
   model: meta-llama/Llama-3.1-8B-Instruct
   tags:
     feat_lora: 'false'
@@ -8,10 +8,11 @@ gaudi2-vllm-fp16-tp1-pp1:
     precision: fp16
     tp: '1'
     pp: '1'
-    hpu: 'HL-225'
+    # hpu: 'HL-225'
+    hpu: gaudi2
     hpu_device: 
     profile: throughput
-gaudi2-vllm-fp16-tp2-pp1:
+gaudi2-vllm-fp16-tp2-latency:
   model: meta-llama/Llama-3.1-8B-Instruct
   tags:
     feat_lora: 'false'
@@ -19,6 +20,7 @@ gaudi2-vllm-fp16-tp2-pp1:
     precision: fp16
     tp: '2'
     pp: '1'
-    hpu: HL-225
+    # hpu: HL-225
+    hpu: gaudi2
     hpu_device: '0x1da31020'
     profile: latency

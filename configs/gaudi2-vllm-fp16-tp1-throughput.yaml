@@ -18,3 +18,4 @@ vllm:
   pipeline_para_size: 1
   quantize: null
   tensor_para_size: 1
+  # enforce_eager: True
