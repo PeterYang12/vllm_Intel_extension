@@ -1,7 +1,6 @@
 import os
-import yaml
 import logging
-from typing import Mapping
+import yaml
 from hub.utils import error_and_exit
 from hub.hardware_inspect import HWSystem
 
@@ -12,36 +11,36 @@ default_manifest_path = os.path.join(default_manifest_dir, 'model_manifests.yaml
 logger = logging.getLogger(__name__)
 
 
-# TODO
 def get_manifest_path() -> str|None:
+    """Get the manifest file path"""
     if os.path.exists(default_manifest_path):
-        logger.info(f"Found manifest file at {default_manifest_path}")
+        logger.info("Found manifest file at %s", default_manifest_path)
         return default_manifest_path
-    else:
-        logger.error(f"Manifest file not found at {default_manifest_path}")
+
+    logger.error("Manifest file not found at %s", default_manifest_path)
     return None
 
 
-# TODO
 def get_all_profiles(manifest_path: str):
-    # get all the profiles from the manifest
-    with open(manifest_path, 'r') as file:
+    """Get all the profiles from the manifest"""
+    with open(manifest_path, 'r', encoding="utf-8") as file:
         manifests = yaml.load(file, Loader=yaml.FullLoader)
     return manifests
 
 
 def filter_manifest_configs(manifest_path: str):
-    # filter out the configs that are suitable for the current system
+    """Filter out the configs that are suitable for the current system"""
     manifests = get_all_profiles(manifest_path)
     if len(manifests) > 0:
-        logger.info(f"Found {len(manifests)} profiles in the manifest file")
+        logger.info("Found %s profiles in the manifest file", len(manifests))
         return manifests
     else:
-        logger.error(f"No config found in manifest file {manifest_path}")
+        logger.error("No config found in manifest file %s", manifest_path)
         return None
 
 
 def get_profile_description(profile):
+    """Get the description of the profile"""
     tags = profile["tags"]
     components = []
     if "hpu" in tags:
@@ -57,30 +56,31 @@ def get_profile_description(profile):
     return "-".join(components).lower()
 
 
-# TODO
 def get_optimal_manifest_config(
         manifest_path: str, system: HWSystem, override: bool = False
 ) -> str:
+    """Get the optimal config from the manifest"""
     config_results = filter_manifest_configs(manifest_path)
+    choosen_profile_name = ""
     if len(config_results) == 0:
         error_message = "No suitable config found in the manifest file"
-        # TODO print the detected system configuration
+        # TODO: print the detected system configuration
         error_and_exit(error_message)
     else:
         cnt = 0
-        choosen_profile_name = None
         for profile_name, profile in config_results.items():
             if cnt == 0:
                 choosen_profile_name = profile_name
             profile_description = get_profile_description(profile)
-            logger.info(f"Profile {cnt}: {profile_description}")
+            logger.info("Profile %s: %s", cnt, profile_description)
             cnt += 1
-    # TODO
+
     return choosen_profile_name + ".yaml"
 
 
 def generate_launch_args_from_profile(optimal_profile_path: str):
-    with open(optimal_profile_path, 'r') as file:
+    """Generate the launch arguments from the optimal profile"""
+    with open(optimal_profile_path, 'r', encoding="utf-8") as file:
         profile_args = yaml.load(file, Loader=yaml.FullLoader)
     backend = profile_args["backend"]
     if profile_args[backend]:
@@ -92,16 +92,21 @@ def generate_launch_args_from_profile(optimal_profile_path: str):
 
 
 def generate_profile_args(system: HWSystem):
+    """Generate the launch arguments from the optimal profile"""
     manifest_path = get_manifest_path()
     override = False
     if manifest_path is not None:
         optimal_config_profile_name = get_optimal_manifest_config(manifest_path, system, override)
-        optimal_config_profile_path = os.path.join(default_manifest_dir, optimal_config_profile_name)
+        optimal_config_profile_path = os.path.join(
+            default_manifest_dir, optimal_config_profile_name)
         if os.path.exists(optimal_config_profile_path):
-            logger.info(f" The choosen optimal profile path: \n{optimal_config_profile_path}")
+            logger.info(" The choosen optimal profile path: %s", optimal_config_profile_path)
             generate_launch_args_from_profile(optimal_config_profile_path)
         else:
-            error_message = f"Can't find the optimal profile file. The file path doesn't exist.\n{optimal_config_profile_path}"
+            error_message = (
+                f"Can't find the optimal profile file. The file path: "
+                f"'{optimal_config_profile_path}' doesn't exist."
+                )
             error_and_exit(error_message)
     else:
         error_message = "Can't find the manifest file"
