@@ -1,12 +1,15 @@
 import logging
 from typing import Mapping
+
 logger = logging.getLogger(__name__)
+
 
 # hpu_families = {}
 
 
 class HWSystem:
     """The hardware system"""
+
     def __init__(self) -> None:
         self.total_hpu: Mapping = {}
         self.free_hpu: Mapping = {}
@@ -29,7 +32,8 @@ class HWSystem:
 
 class HPUUnit:
     """A single HPU device"""
-    def __init__(self, name: str, device_id: str,total_memory: float,
+
+    def __init__(self, name: str, device_id: str, total_memory: float,
                  free_memory: float) -> None:
         self.name = name
         self.device_id = device_id

@@ -10,7 +10,7 @@ gaudi2-vllm-fp16-tp1-throughput:
     pp: '1'
     # hpu: 'HL-225'
     hpu: gaudi2
-    hpu_device: 
+    hpu_device:
     profile: throughput
 gaudi2-vllm-fp16-tp2-latency:
   model: meta-llama/Llama-3.1-8B-Instruct

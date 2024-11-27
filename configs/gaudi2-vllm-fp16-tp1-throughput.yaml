@@ -4,8 +4,8 @@ logging_level: INFO
 # model_repo_path: /model-store
 model_type: LLAMA3
 pipeline:
-  # model_name: ensemble
-  # num_instances: 256
+# model_name: ensemble
+# num_instances: 256
 # TODO
 vllm:
   # ckpt_type: hf
