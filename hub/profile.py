@@ -23,8 +23,13 @@ def get_manifest_path() -> str|None:
 
 def get_all_profiles(manifest_path: str):
     """Get all the profiles from the manifest"""
-    with open(manifest_path, 'r', encoding="utf-8") as file:
-        manifests = yaml.load(file, Loader=yaml.FullLoader)
+    try:
+        with open(manifest_path, 'r', encoding="utf-8") as file:
+            manifests = yaml.load(file, Loader=yaml.FullLoader)
+    except FileNotFoundError as ex:
+        error_message = f"Can't find the manifest file at {manifest_path}"
+        logger.error(error_message)
+        raise ex
     return manifests
 
 
@@ -80,8 +85,13 @@ def get_optimal_manifest_config(
 
 def generate_launch_args_from_profile(optimal_profile_path: str) -> dict:
     """Generate the launch arguments from the optimal profile"""
-    with open(optimal_profile_path, 'r', encoding="utf-8") as file:
-        profile_args = yaml.load(file, Loader=yaml.FullLoader)
+    try:
+        with open(optimal_profile_path, 'r', encoding="utf-8") as file:
+            profile_args = yaml.load(file, Loader=yaml.FullLoader)
+    except FileNotFoundError as ex:
+        error_message = f"Can't find the profile file at {optimal_profile_path}"
+        logger.error(error_message)
+        raise ex
     backend = profile_args["backend"]
     config_args = {}
     if profile_args[backend]:
@@ -97,8 +107,13 @@ def dump_config_args_to_yaml(config_args: dict, output_path: str, filename: str 
     """Dump the config args into a yaml file"""
     if check_dir_exist(output_path):
         output_file_path = os.path.join(output_path, filename)
-        with open(output_file_path, 'w', encoding="utf-8") as file:
-            yaml.dump(config_args, file)
+        try:
+            with open(output_file_path, 'w', encoding="utf-8") as file:
+                yaml.dump(config_args, file)
+        except Exception as ex:
+            error_message = f"Can't write the config args into {output_file_path}"
+            logger.error(error_message)
+            raise ex
         logger.info("Dumped the config args into %s", output_file_path)
 
 
