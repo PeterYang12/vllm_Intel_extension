@@ -1,0 +1,5 @@
+1. api_server --config
+2. batch_size/bucket_size
+3. HW spec
+4. Warmup skip? pre-compile? --enforce-eager?
+5. Model investigation.

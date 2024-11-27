@@ -2,7 +2,7 @@ import logging
 from typing import Mapping
 logger = logging.getLogger(__name__)
 
-hpu_families = {}
+# hpu_families = {}
 
 
 class HWSystem:
