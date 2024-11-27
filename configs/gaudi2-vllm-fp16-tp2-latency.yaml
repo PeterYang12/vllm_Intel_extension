@@ -14,6 +14,6 @@ vllm:
   # model_path: /config/models/llama3_8b_pyt_safetensors_mode-pretrain
   # model_type: llama
   # num_gpus: 2
-  pipeline_parallel_size: 1
+  pipeline-parallel-size: 1
   # quantize: null
-  tensor_parallel_size: 2
+  tensor-parallel-size: 2
