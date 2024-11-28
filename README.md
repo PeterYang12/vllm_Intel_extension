@@ -6,6 +6,14 @@ Intel extension for vllm
 
 ### Installation
 
+#### build docker image
+
+```bash
+docker build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy -f Dockerfile.hpu -t test .
+```
+
+#### For develop
+
 ```bash
 python -m venv venv
 source venv/bin/activate
