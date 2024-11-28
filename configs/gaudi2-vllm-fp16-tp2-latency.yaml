@@ -15,5 +15,6 @@ vllm:
   # model_type: llama
   # num_gpus: 2
   pipeline-parallel-size: 1
+  model: meta-llama/Llama-3.1-8B-Instruct
   # quantize: null
   tensor-parallel-size: 2
